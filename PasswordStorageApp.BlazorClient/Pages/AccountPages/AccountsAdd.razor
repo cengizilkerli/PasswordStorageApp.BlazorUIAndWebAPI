@@ -1,7 +1,8 @@
 ﻿@page "/accounts/add"
 @inject DialogService DialogService
 @inject HttpClient HttpClient
-@inject NotificationService NotificationService
+@inject NavigationManager Navigation
+@inject IToastService ToastService
 
 <RadzenTemplateForm Data="@createDto" Submit="@((AccountCreateDto args) => SubmitAsync(args))">
     <RadzenRow Gap="2rem" class="rz-p-0 rz-p-lg-4">
@@ -11,10 +12,10 @@
                     <RadzenStack Gap="1rem">
                         <RadzenRow AlignItems="AlignItems.Center">
                             <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenLabel Text="Hesap Tipi"/>
+                                <RadzenLabel Text="Hesap Tipi" />
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="8">
-                                <RadzenDropDown @bind-Value="createDto.Type" AllowClear="true" Placeholder="Hesap Tipini Seciniz..." Data="@accountTypes" Style="width: 100%;"/>
+                                <RadzenDropDown @bind-Value="createDto.Type" AllowClear="true" Placeholder="Hesap Tipini Seciniz..." Data="@accountTypes" Style="width: 100%;" />
                             </RadzenColumn>
                         </RadzenRow>
                         <RadzenRow AlignItems="AlignItems.Center">
@@ -30,7 +31,7 @@
                                 <RadzenLabel Text="Sifre" />
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="8">
-                                <RadzenPassword Style="width: 100%;" @bind-Value="createDto.Password" Placeholder="Sifrenizi Giriniz..."/>
+                                <RadzenPassword Style="width: 100%;" @bind-Value="createDto.Password" Placeholder="Sifrenizi Giriniz..." />
                             </RadzenColumn>
                         </RadzenRow>
                     </RadzenStack>
@@ -57,18 +58,27 @@
 
         if (response.IsSuccessStatusCode)
         {
-            NotificationService.Notify(NotificationSeverity.Success, "Hesap Eklendi", "Hesap basariyla eklendi.");
+            ToastService.Success("Hesap basariyla eklendi.", "Hesap Eklendi");
 
-            DialogService.Close(true);
+            if (IsDialog)
+                DialogService.Close(true);
+            else
+                Navigation.NavigateTo("/accounts");
         }
         else
         {
-            NotificationService.Notify(NotificationSeverity.Error, "Hata", "Hesap eklenirken bir hata olustu.");
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest || response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                ToastService.Warning("Lütfen formu kontrol ediniz.", "Uyarı");
+            else
+                ToastService.Error("Hesap eklenirken sunucu tarafında bir hata olustu.", "Hata");
         }
     }
 
     private void Cancel()
     {
-        DialogService.Close();
+        if (IsDialog)
+            DialogService.Close(false);
+        else
+            Navigation.NavigateTo("/accounts");
     }
 }

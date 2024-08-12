@@ -1,9 +1,8 @@
-﻿namespace PasswordStorageApp.Domain.Enums
+﻿namespace PasswordStorageApp.Domain.Enums;
+
+public enum AccountType
 {
-    public enum AccountType : Byte
-    {
-        Web = 1,
-        Mobile = 2,
-        Desktop = 3        
-    }
+    Web=1,
+    Mobile=2,
+    Desktop=3
 }

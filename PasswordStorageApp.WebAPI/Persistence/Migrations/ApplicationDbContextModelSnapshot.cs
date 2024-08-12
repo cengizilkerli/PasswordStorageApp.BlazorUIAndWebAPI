@@ -3,11 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PasswordStorageApp.WebAPI.Persistens.Contexts;
+using PasswordStorageApp.WebApi.Persistence.Contexts;
 
 #nullable disable
 
-namespace PasswordStorageApp.WebAPI.Persistence.Migrations
+namespace PasswordStorageApp.WebApi.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -17,7 +17,7 @@ namespace PasswordStorageApp.WebAPI.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
 
-            modelBuilder.Entity("PasswordStorageApp.Domain.Models.Account", b =>
+            modelBuilder.Entity("PasswordStorageApp.WebApi.Models.Account", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,7 +48,7 @@ namespace PasswordStorageApp.WebAPI.Persistence.Migrations
 
                     b.HasIndex("Username");
 
-                    b.ToTable("Account", (string)null);
+                    b.ToTable("Accounts", (string)null);
 
                     b.HasData(
                         new

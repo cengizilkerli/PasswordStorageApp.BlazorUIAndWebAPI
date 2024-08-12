@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PasswordStorageApp.WebAPI.Controllers
+namespace PasswordStorageApp.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -18,7 +18,8 @@ namespace PasswordStorageApp.WebAPI.Controllers
         [HttpGet("{passwordId}")]
         public IActionResult GetById(string passwordId)
         {
-            var password = _passwords.FirstOrDefault(x => x == passwordId);
+            var password = _passwords
+                .FirstOrDefault(p => p == passwordId);
 
             if (string.IsNullOrEmpty(password))
                 return NotFound();
@@ -29,12 +30,14 @@ namespace PasswordStorageApp.WebAPI.Controllers
         [HttpDelete("{passwordId}")]
         public IActionResult Remove(string passwordId)
         {
-            var password = _passwords.FirstOrDefault(x => x == passwordId);
+            var password = _passwords
+                .FirstOrDefault(p => p == passwordId);
 
             if (string.IsNullOrEmpty(password))
                 return NotFound();
 
-            _passwords.Remove(passwordId);
+            _passwords.Remove(password);
+            // dbContext.Passwords.Remove(password);
 
             return NoContent();
         }
@@ -45,7 +48,7 @@ namespace PasswordStorageApp.WebAPI.Controllers
             "password",
             "123456789",
             "12345678",
-            "12345",    
+            "12345",
             "1234567",
             "1234567890",
             "qwerty",
@@ -84,6 +87,5 @@ namespace PasswordStorageApp.WebAPI.Controllers
             "password",
             "qazwsx"
         };
-
     }
 }
